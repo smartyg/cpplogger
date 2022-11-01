@@ -138,7 +138,7 @@ namespace cpplogger {
 		bool setFile_int (const std::string&);
 		bool setLoglevel_int (const Level&);
 		bool setSplit_int (const bool&);
-		bool setIncludeFunctionNames (const bool&);
+		bool setIncludeFunctionNames_int (const bool&);
 
 		inline static const std::string concat (const std::string_view s1, const std::string_view s2) {
 			std::string string (s1.length () + s2.length (), 0);

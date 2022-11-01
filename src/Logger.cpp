@@ -89,7 +89,7 @@ bool Logger::setSplit_int (const bool& split) {
 	return (this->_split == split);
 }
 
-bool Logger::setIncludeFunctionNames (const bool& func_names) {
+bool Logger::setIncludeFunctionNames_int (const bool& func_names) {
 	this->_include_function_names = func_names;
 	return (this->_include_function_names == func_names);
 }
