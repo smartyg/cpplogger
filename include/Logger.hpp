@@ -44,10 +44,12 @@ namespace cpplogger {
 		std::ostream* _stream;
 		Level _level;
 		bool _split;
+		bool _include_function_names = false;
 
 		constexpr static const std::string_view prefix_release = "{:s}: ";
 		constexpr static const std::string_view prefix_logger = "{:s}: {:s}: ";
-		constexpr static const std::string_view prefix_debug = "{:s}: {:s}:{:d} {:s}: ";
+		constexpr static const std::string_view prefix_debug = "{:s}: {:s}:{:d}: ";
+		constexpr static const std::string_view prefix_debug_ext = "{:s}: {:s}:{:d} {:s}: ";
 
 		Logger (void);
 		~Logger (void);
@@ -71,8 +73,13 @@ namespace cpplogger {
 			const std::string print_format = Logger::concat (Logger::prefix_release, format);
 			this->print (print_format, level_str, args...);
 #elif defined(_DEBUG)
-			const std::string print_format = Logger::concat (Logger::prefix_debug, format);
-			this->print (print_format, level_str, location.file_name (), location.line (), location.function_name (), args...);
+			if (this->_include_function_names) {
+				const std::string print_format = Logger::concat (Logger::prefix_debug_ext, format);
+				this->print (print_format, level_str, location.file_name (), location.line (), location.function_name (), args...);
+			} else {
+				const std::string print_format = Logger::concat (Logger::prefix_debug, format);
+				this->print (print_format, level_str, location.file_name (), location.line (), args...);
+			}
 #else
 			const std::string print_format = Logger::concat (Logger::prefix_logger, format);
 			this->print (print_format, level_str, location.function_name (), args...);
@@ -107,6 +114,10 @@ namespace cpplogger {
 			return Logger::getInstance ().setSplit_int (split);
 		}
 
+		inline static bool setIncludeFunctionNames (const bool& func_names = false) {
+			return Logger::getInstance ().setIncludeFunctionNames_int (func_names);
+		}
+
 	private:
 		[[nodiscard]] static Logger& getInstance (void);
 
@@ -127,6 +138,7 @@ namespace cpplogger {
 		bool setFile_int (const std::string&);
 		bool setLoglevel_int (const Level&);
 		bool setSplit_int (const bool&);
+		bool setIncludeFunctionNames (const bool&);
 
 		inline static const std::string concat (const std::string_view s1, const std::string_view s2) {
 			std::string string (s1.length () + s2.length (), 0);
