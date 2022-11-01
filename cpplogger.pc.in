@@ -8,5 +8,5 @@ Description: @PROGRAM_SUMMARY@
 Version: @PACKAGE_VERSION@
 URL: @PACKAGE_HOMEPAGE@
 Libs: -L${libdir} -l@PROGRAM_NAME@
-Requires: fmt >= 7.0.0
+Requires: fmt >= 9.0.0
 Cflags: -I${includedir}

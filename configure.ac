@@ -164,7 +164,7 @@ AC_TYPE_UINT8_T
 AC_CHECK_PROGS([GIT], [git])
 
 # Checks for packages.
-PKG_CHECK_MODULES([FMT], [fmt])
+PKG_CHECK_MODULES([FMT], [fmt >= 9.0.0])
 
 # Checks for libraries.
 

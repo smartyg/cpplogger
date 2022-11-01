@@ -112,14 +112,14 @@ namespace cpplogger {
 
 		template <typename... Args>
 		inline void print (const std::string& format, const Args&... args) const {
-			fmt::print (*(this->_stream), format, args...);
+			fmt::print (*(this->_stream), fmt::runtime (format), args...);
 			if (this->_split) {
 				std::ostream* second_stream;
 				if (this->_stream == &std::cout)
 					second_stream = &std::cerr;
 				else
 					second_stream = &std::cout;
-				fmt::print (*second_stream, format, args...);
+				fmt::print (*second_stream, fmt::runtime (format), args...);
 			}
 		}
 
