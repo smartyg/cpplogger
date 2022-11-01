@@ -45,9 +45,9 @@ namespace cpplogger {
 		Level _level;
 		bool _split;
 
-		constexpr static const std::string_view prefix_release = "{}: ";
-		constexpr static const std::string_view prefix_logger = "{}: {}: ";
-		constexpr static const std::string_view prefix_debug = "{}: {}:{} {}: ";
+		constexpr static const std::string_view prefix_release = "{:s}: ";
+		constexpr static const std::string_view prefix_logger = "{:s}: {:s}: ";
+		constexpr static const std::string_view prefix_debug = "{:s}: {:s}:{:d} {:s}: ";
 
 		Logger (void);
 		~Logger (void);
