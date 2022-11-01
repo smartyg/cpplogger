@@ -129,7 +129,7 @@ namespace cpplogger {
 		bool setSplit_int (const bool&);
 
 		inline static const std::string concat (const std::string_view s1, const std::string_view s2) {
-			std::string string (s1.length () + s1.length () + 1, 0);
+			std::string string (s1.length () + s2.length (), 0);
 			char *ptr = string.data ();
 			for (char c : s1) {
 				*ptr = c;
