@@ -30,11 +30,6 @@ Logger::~Logger (void) {
 	return instance;
 }
 
-void Logger::Exception (const Level& level, const std::exception& e) const {
-	(void)level;
-	(void)e;
-}
-
 std::ostream& Logger::getStream (void) {
 	return *(this->_stream);
 }

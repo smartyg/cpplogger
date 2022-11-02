@@ -12,6 +12,12 @@ int main (void) {
 	DEBUG_MSG ("{}!\n", "Hello World");
 	DEBUG_2_MSG (2, "{}!\n", "Hello World");
 
+	try {
+		throw std::runtime_error ("Bye Cruel World!");
+	} catch (std::exception& e) {
+		EXCEPTION_DEBUG_MSG (e);
+	}
+
 	return 0;
 }
 

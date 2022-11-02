@@ -26,6 +26,22 @@
 #define DEBUG_2_MSG(l, format, ...) (LOGGER_MSG((static_cast<cpplogger::Level>(cpplogger::Level::DEBUG + l)), format, __VA_ARGS__))
 #endif
 
+#define EXCEPTION_MSG(level, exception) (cpplogger::Logger::get() (level, exception, std::source_location::current()))
+
+#define EXCEPTION_CRITICAL_MSG(exception) (EXCEPTION_MSG(cpplogger::Level::CRIT, exception))
+#define EXCEPTION_ERROR_MSG(exception) (EXCEPTION_MSG(cpplogger::Level::ERR, exception))
+#define EXCEPTION_WARNING_MSG(exception) (EXCEPTION_MSG(cpplogger::Level::WARNING, exception))
+#define EXCEPTION_NOTICE_MSG(exception) (EXCEPTION_MSG(cpplogger::Level::NOTICE, exception))
+#define EXCEPTION_INFO_MSG(exception) (EXCEPTION_MSG(cpplogger::Level::INFO, exception))
+
+#ifdef _RELEASE
+#define EXCEPTION_DEBUG_MSG(exception) (cpplogger::Logger::emptyFunc())
+#define EXCEPTION_DEBUG_2_MSG(l, exception) (cpplogger::Logger::emptyFunc())
+#else
+#define EXCEPTION_DEBUG_MSG(exception) (EXCEPTION_MSG(cpplogger::Level::DEBUG, exception))
+#define EXCEPTION_DEBUG_2_MSG(l, exception) (EXCEPTION_MSG((static_cast<cpplogger::Level>(cpplogger::Level::DEBUG + l)), exception))
+#endif
+
 namespace cpplogger {
 	enum Level : uint8_t {
 		EMERG   = 0, // System is unusable
@@ -50,6 +66,7 @@ namespace cpplogger {
 		constexpr static const std::string_view prefix_logger = "{:s}: {:s}: ";
 		constexpr static const std::string_view prefix_debug = "{:s}: {:s}:{:d}: ";
 		constexpr static const std::string_view prefix_debug_ext = "{:s}: {:s}:{:d} {:s}: ";
+		constexpr static const std::string_view exception_fmt = "Catch Exception:\n{:s}\n";
 
 		Logger (void);
 		~Logger (void);
@@ -86,7 +103,13 @@ namespace cpplogger {
 #endif
 		}
 
-		void Exception (const Level&, const std::exception&) const;
+		inline void operator() (const Level& level, const std::exception& e, const std::source_location location = std::source_location::current ()) const {
+			if (level > this->_level) return;
+#if defined(_RELEASE)
+			if (level >= Level::DEBUG) return;
+#endif
+			this->operator() (level, Logger::exception_fmt, location, e.what ());
+		}
 
 		std::ostream& getStream (void);
 		const std::string_view getFilename (void);
