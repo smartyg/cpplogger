@@ -7,6 +7,6 @@ Name: @PACKAGE_NAME@
 Description: @PROGRAM_SUMMARY@
 Version: @PACKAGE_VERSION@
 URL: @PACKAGE_HOMEPAGE@
-Libs: -L${libdir} -l@PROGRAM_NAME@
+Libs: -L${libdir} -l@PROGRAM_NAME@ -lfmt
 Requires: fmt >= 9.0.0
 Cflags: -I${includedir}
