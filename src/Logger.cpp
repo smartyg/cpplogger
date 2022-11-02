@@ -48,22 +48,7 @@ const std::string_view Logger::getFilename (void) {
 		return this->_filename;
 	return {};
 }
-/*
-void Logger::print (const std::string& format, ...) const {
-	std::va_list ap;
-	std::va_start (ap, format);
-	std::vfprintf (this->_stream, format, ap);
-	if (this->_split) {
-		std::ostream = second_stream;
-		if (this->_stream == &std::cout)
-			second_stream = &std::cerr;
-		else
-			second_stream = &std::cout;
-		std::vfprintf (second_stream, format, ap);
-	}
-	std::va_end (ap);
-}
-*/
+
 bool Logger::setStream_int (std::ostream& stream) {
 	this->_stream = &stream;
 	if (this->_fstream.is_open ())
