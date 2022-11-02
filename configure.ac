@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([cpplogger], [0.0.0], [goedhart.martijn@gmail.com])
+AC_INIT([cpplogger], [0.1.0], [goedhart.martijn@gmail.com])
 AC_CONFIG_SRCDIR([src/Logger.cpp])
 AC_CONFIG_HEADERS([config.h])
 AH_BOTTOM([#include <features.h>])
@@ -49,8 +49,8 @@ AC_DEFUN([AX_CPP_CHECK_LIB], [
 # some other package constants
 AX_DEFINE_SUBST([PROGRAM_NAME], [cpplogger], [program name])
 AX_DEFINE_SUBST([PROGRAM_SUMMARY], [Library providing a logger for c++ programs], [program summary])
-AX_DEFINE_SUBST([PROGRAM_DESCRIPTION], [...], [program description])
-AX_DEFINE_SUBST([LAST_CHANGE], [30-10-2022], [Date of last change])
+AX_DEFINE_SUBST([PROGRAM_DESCRIPTION], [Logging facility to easily write log messages (optionally including source location) to a stream or file (and optionally also to stdout/stderr).], [program description])
+AX_DEFINE_SUBST([LAST_CHANGE], [02-11-2022], [Date of last change])
 AX_DEFINE_SUBST([AUTHOR], [Martijn Goedhart], [Author])
 AX_DEFINE_SUBST([COPYRIGHT], [Copyright (C) 2022 Martijn Goedhart], [Copyright])
 AX_DEFINE_SUBST([LICENSE], [GNU General Public License], [License name])
