@@ -111,9 +111,17 @@ namespace cpplogger {
 			this->operator() (level, Logger::exception_fmt, location, e.what ());
 		}
 
-		std::ostream& getStream (void);
-		const std::string_view getFilename (void);
-		Level getLoglevel (void);
+		inline static std::ostream& getStream (void) {
+			return Logger::get ().getStream_int ();
+		}
+
+		inline static const std::string_view getFilename (void) {
+			return Logger::get ().getFilename_int ();
+		}
+
+		inline static Level getLoglevel (void) {
+			return Logger::get ().getLoglevel_int ();
+		}
 
 		inline constexpr static void emptyFunc (void) { }
 
@@ -156,6 +164,10 @@ namespace cpplogger {
 				fmt::print (*second_stream, fmt::runtime (format), args...);
 			}
 		}
+
+		std::ostream& getStream_int (void) const;
+		const std::string_view getFilename_int (void) const;
+		Level getLoglevel_int (void) const;
 
 		bool setStream_int (std::ostream&);
 		bool setFile_int (const std::string&);

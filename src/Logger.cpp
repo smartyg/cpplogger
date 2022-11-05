@@ -30,21 +30,21 @@ Logger::~Logger (void) {
 	return instance;
 }
 
-std::ostream& Logger::getStream (void) {
+std::ostream& Logger::getStream_int (void) const {
 	return *(this->_stream);
 }
 
-Level Logger::getLoglevel (void) {
+Level Logger::getLoglevel_int (void) {
 	return this->_level;
 }
 
-const std::string_view Logger::getFilename (void) {
+const std::string_view Logger::getFilename_int (void) const {
 	if (!this->_filename.empty ())
 		return this->_filename;
 	return {};
 }
 
-bool Logger::setStream_int (std::ostream& stream) {
+bool Logger::setStream_int (std::ostream& stream) const {
 	this->_stream = &stream;
 	if (this->_fstream.is_open ())
 		this->_fstream.close ();
