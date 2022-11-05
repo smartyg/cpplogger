@@ -33,7 +33,7 @@ std::ostream& Logger::getStream_int (void) const {
 	return *(this->_stream);
 }
 
-Level Logger::getLoglevel_int (void) {
+Level Logger::getLoglevel_int (void) const {
 	return this->_level;
 }
 
@@ -43,7 +43,7 @@ const std::string_view Logger::getFilename_int (void) const {
 	return {};
 }
 
-bool Logger::setStream_int (std::ostream& stream) const {
+bool Logger::setStream_int (std::ostream& stream) {
 	this->_stream = &stream;
 	if (this->_fstream.is_open ())
 		this->_fstream.close ();
