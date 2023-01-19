@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstdint>
+#include <exception>
 #include <source_location>
 #include <fmt/core.h>
 #include <fmt/ostream.h>
@@ -85,22 +86,31 @@ namespace cpplogger {
 			if (level > this->_level) return;
 
 			const char* level_str = Logger::levelToString (level);
+			try {
 #if defined(_RELEASE)
-			if (level >= Level::DEBUG) return;
-			const std::string print_format = Logger::concat (Logger::prefix_release, format);
-			this->print (print_format, level_str, args...);
+				if (level >= Level::DEBUG) return;
+				const std::string print_format = Logger::concat (Logger::prefix_release, format);
+				this->print (print_format, level_str, args...);
 #elif defined(_DEBUG)
-			if (this->_include_function_names) {
-				const std::string print_format = Logger::concat (Logger::prefix_debug_ext, format);
-				this->print (print_format, level_str, location.file_name (), location.line (), location.function_name (), args...);
-			} else {
-				const std::string print_format = Logger::concat (Logger::prefix_debug, format);
-				this->print (print_format, level_str, location.file_name (), location.line (), args...);
-			}
+				if (this->_include_function_names) {
+					const std::string print_format = Logger::concat (Logger::prefix_debug_ext, format);
+					this->print (print_format, level_str, location.file_name (), location.line (), location.function_name (), args...);
+				} else {
+					const std::string print_format = Logger::concat (Logger::prefix_debug, format);
+					this->print (print_format, level_str, location.file_name (), location.line (), args...);
+				}
 #else
-			const std::string print_format = Logger::concat (Logger::prefix_logger, format);
-			this->print (print_format, level_str, location.function_name (), args...);
+				const std::string print_format = Logger::concat (Logger::prefix_logger, format);
+				this->print (print_format, level_str, location.function_name (), args...);
 #endif
+			} catch (const std::exception& e) {
+				try {
+					const std::string print_format = Logger::concat (Logger::prefix_debug_ext, Logger::exception_fmt);
+					this->print (print_format, level_str, location.file_name (), location.line (), location.function_name (), e.what ());
+				} catch (const std::exception&) {
+					this->print ("ERROR: Error while printing error exception.");
+				}
+			}
 		}
 
 		inline void operator() (const Level& level, const std::exception& e, const std::source_location location = std::source_location::current ()) const {
