@@ -12,7 +12,7 @@
 using cpplogger::Level;
 using cpplogger::Logger;
 
-Logger::Logger (void) {
+Logger::Logger (void) noexcept {
 	this->_stream = &std::cout;
 	this->_level = Level::DEBUG;
 }
@@ -24,20 +24,20 @@ Logger::~Logger (void) {
 	this->_filename.clear ();
 }
 
-[[nodiscard]] Logger& Logger::getInstance (void) {
+[[nodiscard]] Logger& Logger::getInstance (void) noexcept {
 	static Logger instance;
 	return instance;
 }
 
-std::ostream& Logger::getStream_int (void) const {
+std::ostream& Logger::getStream_int (void) const noexcept {
 	return *(this->_stream);
 }
 
-Level Logger::getLoglevel_int (void) const {
+Level Logger::getLoglevel_int (void) const noexcept {
 	return this->_level;
 }
 
-const std::string_view Logger::getFilename_int (void) const {
+const std::string_view Logger::getFilename_int (void) const noexcept {
 	if (!this->_filename.empty ())
 		return this->_filename;
 	return {};
@@ -58,17 +58,17 @@ bool Logger::setFile_int (const std::string& file) {
 	return true;
 }
 
-bool Logger::setLoglevel_int (const Level& level) {
+bool Logger::setLoglevel_int (const Level& level) noexcept {
 	this->_level = level;
 	return (this->_level == level);
 }
 
-bool Logger::setSplit_int (const bool& split) {
+bool Logger::setSplit_int (const bool& split) noexcept {
 	this->_split = split;
 	return (this->_split == split);
 }
 
-bool Logger::setIncludeFunctionNames_int (const bool& func_names) {
+bool Logger::setIncludeFunctionNames_int (const bool& func_names) noexcept {
 	this->_include_function_names = func_names;
 	return (this->_include_function_names == func_names);
 }

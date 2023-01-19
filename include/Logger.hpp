@@ -69,20 +69,20 @@ namespace cpplogger {
 		constexpr static const std::string_view prefix_debug_ext = "{:s}: {:s}:{:d} {:s}: ";
 		constexpr static const std::string_view exception_fmt = "Catch Exception:\n{:s}\n";
 
-		Logger (void);
+		Logger (void) noexcept;
 		~Logger (void);
-		Logger (const Logger& other) = delete; // copy constructor
-		Logger (Logger&& other) noexcept = delete; // move constructor
-		void operator= (const Logger& other) = delete; // copy assignment
+		Logger (const Logger& other)             = delete; // copy constructor
+		Logger (Logger&& other) noexcept         = delete; // move constructor
+		void operator= (const Logger& other)     = delete; // copy assignment
 		void operator= (Logger&& other) noexcept = delete; // move assignment
 
 	public:
-		[[nodiscard]] static const Logger& get (void) {
+		[[nodiscard]] static const Logger& get (void) noexcept {
 			return Logger::getInstance ();
 		}
 
 		template <typename... Args>
-		inline void operator() (const Level& level, const std::string_view format, const std::source_location location = std::source_location::current (), const Args&... args) const {
+		inline void operator() (const Level& level, const std::string_view format, const std::source_location location = std::source_location::current (), const Args&... args) const noexcept {
 			if (level > this->_level) return;
 
 			const char* level_str = Logger::levelToString (level);
@@ -113,7 +113,7 @@ namespace cpplogger {
 			}
 		}
 
-		inline void operator() (const Level& level, const std::exception& e, const std::source_location location = std::source_location::current ()) const {
+		inline void operator() (const Level& level, const std::exception& e, const std::source_location location = std::source_location::current ()) const noexcept {
 			if (level > this->_level) return;
 #if defined(_RELEASE)
 			if (level >= Level::DEBUG) return;
@@ -121,19 +121,19 @@ namespace cpplogger {
 			this->operator() (level, Logger::exception_fmt, location, e.what ());
 		}
 
-		inline static std::ostream& getStream (void) {
+		inline static std::ostream& getStream (void) noexcept {
 			return Logger::get ().getStream_int ();
 		}
 
-		inline static const std::string_view getFilename (void) {
+		inline static const std::string_view getFilename (void) noexcept {
 			return Logger::get ().getFilename_int ();
 		}
 
-		inline static Level getLoglevel (void) {
+		inline static Level getLoglevel (void) noexcept {
 			return Logger::get ().getLoglevel_int ();
 		}
 
-		inline constexpr static void emptyFunc (void) { }
+		inline constexpr static void emptyFunc (void) noexcept { }
 
 		inline static bool setStream (std::ostream& stream) {
 			return Logger::getInstance ().setStream_int (stream);
@@ -143,24 +143,24 @@ namespace cpplogger {
 			return Logger::getInstance ().setFile_int (file);
 		}
 
-		inline static bool setLoglevel (const Level& level) {
+		inline static bool setLoglevel (const Level& level) noexcept {
 			return Logger::getInstance ().setLoglevel_int (level);
 		}
 
-		inline static bool setLoglevel (const int& level) {
+		inline static bool setLoglevel (const int& level) noexcept {
 			return Logger::getInstance ().setLoglevel_int (static_cast<Level>(level));
 		}
 
-		inline static bool setSplit (const bool& split = false) {
+		inline static bool setSplit (const bool& split = false) noexcept {
 			return Logger::getInstance ().setSplit_int (split);
 		}
 
-		inline static bool setIncludeFunctionNames (const bool& func_names = false) {
+		inline static bool setIncludeFunctionNames (const bool& func_names = false) noexcept {
 			return Logger::getInstance ().setIncludeFunctionNames_int (func_names);
 		}
 
 	private:
-		[[nodiscard]] static Logger& getInstance (void);
+		[[nodiscard]] static Logger& getInstance (void) noexcept;
 
 		template <typename... Args>
 		inline void print (const std::string& format, const Args&... args) const {
@@ -175,17 +175,17 @@ namespace cpplogger {
 			}
 		}
 
-		std::ostream& getStream_int (void) const;
-		const std::string_view getFilename_int (void) const;
-		Level getLoglevel_int (void) const;
+		std::ostream& getStream_int (void) const noexcept;
+		const std::string_view getFilename_int (void) const noexcept;
+		Level getLoglevel_int (void) const noexcept;
 
 		bool setStream_int (std::ostream&);
 		bool setFile_int (const std::string&);
-		bool setLoglevel_int (const Level&);
-		bool setSplit_int (const bool&);
-		bool setIncludeFunctionNames_int (const bool&);
+		bool setLoglevel_int (const Level&) noexcept;
+		bool setSplit_int (const bool&) noexcept;
+		bool setIncludeFunctionNames_int (const bool&) noexcept;
 
-		inline static const std::string concat (const std::string_view s1, const std::string_view s2) {
+		inline static const std::string concat (const std::string_view s1, const std::string_view s2) noexcept {
 			std::string string (s1.length () + s2.length (), 0);
 			char *ptr = string.data ();
 			for (char c : s1) {
@@ -201,7 +201,7 @@ namespace cpplogger {
 			return string;
 		}
 
-		constexpr static const char *levelToString (const Level& level) {
+		constexpr static const char *levelToString (const Level& level) noexcept {
 			switch (level)
 			{
 				case Level::EMERG   : return "EMERGENCY";
